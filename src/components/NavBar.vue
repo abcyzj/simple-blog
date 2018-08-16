@@ -3,20 +3,20 @@
         <nav class="top-bar">
             <ul class="left-list">
                 <li class="avatar">
-                    <a href="/">
+                    <router-link :to="{name: 'home'}">
                     <img src="@/assets/avatar.jpg" height="65" width="65" style="border-radius: 5px;"/>
-                    </a>
+                    </router-link>
                 </li>
                 <li @mouseover="showCategoryMenu = true" @mouseout="showCategoryMenu = false">
-                    <a href="#">闲谈</a>
+                    <router-link :to="{name: 'list', params: {categoryName: 'all'}}">闲谈</router-link>
                     <ul class="dropdown-menu" v-show="showCategoryMenu">
                         <li v-for="category in articleCategories">
-                            <a href="#">{{ category }}</a>
+                            <router-link :to="{name: 'list', params: {categoryName: category}}">{{ category }}</router-link>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#">关于</a>
+                    <router-link :to="{name: 'about'}">关于</router-link>
                 </li>
             </ul>
         </nav>
@@ -25,11 +25,17 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
+import {State, Action} from 'vuex-class';
 
 @Component
 export default class NavBar extends Vue {
-    private articleCategories: string[] = ['思考', '旅行'];
+    @State('categories') private articleCategories: string[];
+    @Action('fetchCategories') private fetchCategories: () => void;
     private showCategoryMenu: boolean = false;
+
+    private created() {
+        this.fetchCategories();
+    }
 }
 </script>
 

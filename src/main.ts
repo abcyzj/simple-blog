@@ -5,6 +5,15 @@ import store from './store';
 
 Vue.config.productionTip = false;
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = `Simple Blog - ${to.meta.title}`;
+  } else {
+    document.title = 'Simple Blog';
+  }
+  next();
+});
+
 new Vue({
   router,
   store,

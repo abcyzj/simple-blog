@@ -1,8 +1,10 @@
 <template>
-    <div class="terminal">
+    <div class="terminal-wrapper">
         <p class="terminal-title">{{ terminalTitle }}</p>
-        <div v-for="line in terminalLines" :class="{'terminal-line': true, 'terminal-line-active': line.active}">
-            {{ line.content }}
+        <div class="terminal">
+            <div v-for="line in terminalLines" :class="{'terminal-line': true, 'terminal-line-active': line.active}">
+                {{ line.content }}
+            </div>
         </div>
     </div>
 </template>
@@ -10,7 +12,6 @@
 <script lang="ts">
 import {Vue, Prop, Component} from 'vue-property-decorator';
 import { setInterval, clearInterval, setTimeout } from 'timers';
-import { currentId } from 'async_hooks';
 
 @Component
 export default class FakeTerminal extends Vue {
@@ -42,17 +43,19 @@ export default class FakeTerminal extends Vue {
 </script>
 
 <style scoped>
-.terminal {
+.terminal-wrapper {
     border-radius: 10px;
     background-color: black;
     width: 50%;
-    height: 30em;
+    height: 40em;
     margin-left: 25%;
     margin-top: 2em;
     box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    overflow: hidden;
 }
 .terminal-title {
     text-align: center;
+    margin-top: 0;
     color: #525252;
     background: linear-gradient(to bottom,  #f7f7f7 0%,#B8B8B8 100%);
     border-top-left-radius: 10px;
@@ -61,9 +64,12 @@ export default class FakeTerminal extends Vue {
 .terminal-line {
     color: #00fd55;
     font-family: 'Helvetica Neue';
-    font-size: 26px;
+    font-size: 24px;
     letter-spacing: 2px;
     text-align: left;
+}
+.terminal-line::before {
+    content: " ";
 }
 .terminal-line-active::after {
     content: "";
@@ -73,11 +79,9 @@ export default class FakeTerminal extends Vue {
     width: 0.5em;
     height: 1.5em;
     display: inline-block;
-    margin-left: 5px;
 }
 .terminal-line::before {
     content: "$";
-    margin-right: 10px;
 }
 @keyframes cursor-flash {
     0% {
