@@ -27,7 +27,7 @@ interface Article {
 
 // for test
 function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 @Component
@@ -45,18 +45,18 @@ export default class CategoryBox extends Vue {
         await this.fetchLists(this.category);
         this.totalArticleNum = this.articleInCategory[this.category].length;
         let ids = this.articleInCategory[this.category].slice(0, this.numberOfArticles);
-        for(let id of ids) {
+        for (let id of ids) {
             this.shownArticles.push({
                 title: '',
                 excerpt: '',
                 id,
             });
         }
-        for(let article of this.shownArticles) {
+        for (let article of this.shownArticles) {
             this.getArticleInfo(article);
         }
     }
-    
+
     private async getArticleInfo(article: Article) {
         await sleep(300);
         Vue.set(article, 'title', '在北京的一天');
