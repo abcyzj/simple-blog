@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import ArticleList from './views/ArticleList.vue';
-import About from './views/About.vue';
+import ArticleViewer from './views/ArticleViewer.vue';
 
 Vue.use(Router);
 
@@ -28,9 +28,21 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: About,
+      component: ArticleViewer,
+      props: {
+        id: 'about',
+      },
       meta: {
         title: '关于',
+      },
+    },
+    {
+      path: '/article/:id',
+      name: 'article',
+      component: ArticleViewer,
+      props: true,
+      meta: {
+        title: '文章',
       },
     },
   ],

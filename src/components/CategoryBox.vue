@@ -6,11 +6,14 @@
         </p>
         <div class="article-wrapper">
             <div class="flex">
-                <a class="article-teaser" v-for="article in shownArticles" :href="`/article/${article.id}`" :title="article.excerpt">
+                <router-link class="article-teaser" v-for="article in shownArticles" :to="{name: 'article', params: {id: article.id}}" :title="article.excerpt" :key="article.id">
                     <h3>{{ article.title }}</h3>
-                </a>
+                </router-link>
             </div>
         </div>
+        <p v-show="shownArticles.length < totalArticleNum" :style="{textAlign: 'center', margin: 0}">
+            <a class="btn-small" @click="addArticles">更多</a>
+        </p>
     </div>
 </template>
 
@@ -33,7 +36,8 @@ function sleep(ms: number) {
 @Component
 export default class CategoryBox extends Vue {
     @Prop(String) private category: string;
-    @Prop({type: Number, default: 5}) private numberOfArticles: number;
+    @Prop({type: Number, default: 6}) private numberOfArticles: number;
+    @Prop({type: Number, default: 3}) private numberPerAdd: number;
     @State('articleInCategory') private articleInCategory: {[name: string]: string[]};
     @Action('fetchLists') private fetchLists: (category: string) => void;
 
@@ -54,6 +58,20 @@ export default class CategoryBox extends Vue {
         }
         for (let article of this.shownArticles) {
             this.getArticleInfo(article);
+        }
+    }
+
+    private async addArticles() {
+        let ids = this.articleInCategory[this.category].slice(this.shownArticles.length, this.shownArticles.length + this.numberPerAdd);
+        for (let id of ids) {
+            this.shownArticles.push({
+                title: '',
+                excerpt: '',
+                id,
+            });
+        }
+        for (let i = this.shownArticles.length - this.numberPerAdd; i < this.shownArticles.length; i++) {
+            this.getArticleInfo(this.shownArticles[i]);
         }
     }
 
@@ -135,5 +153,16 @@ hr {
 }
 .article-teaser:hover {
     transform: translateY(-2px);
+}
+.btn-small {
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, #fff, #f8f8f8);
+    border-radius: 8px;
+    color: #4AAE9B;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    border: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-decoration: none;
 }
 </style>
