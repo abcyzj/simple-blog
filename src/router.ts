@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import ArticleList from './views/ArticleList.vue';
 import ArticleViewer from './views/ArticleViewer.vue';
+import Page404 from './views/404.vue';
 
 Vue.use(Router);
 
@@ -43,6 +44,14 @@ export default new Router({
       props: true,
       meta: {
         title: '文章',
+      },
+    },
+    {
+      path: '*',
+      name: '404',
+      component: Page404,
+      meta: {
+        title: '404',
       },
     },
   ],
