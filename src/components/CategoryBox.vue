@@ -21,16 +21,12 @@
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
 import {State, Action} from 'vuex-class';
 import { setTimeout } from 'timers';
+import axios from 'axios';
 
 interface Article {
     title: string;
     excerpt: string;
     id: string;
-}
-
-// for test
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 @Component
@@ -76,9 +72,14 @@ export default class CategoryBox extends Vue {
     }
 
     private async getArticleInfo(article: Article) {
-        await sleep(300);
-        Vue.set(article, 'title', '在北京的一天');
-        Vue.set(article, 'excerpt', '舒服');
+        const info = await axios.get(`/api/articleInfo/${article.id}`);
+        if (info.status === 200) {
+            Vue.set(article, 'title', info.data.title);
+            Vue.set(article, 'excerpt', info.data.excerpt);
+        } else {
+            Vue.set(article, 'title', 'Error');
+            Vue.set(article, 'excerpt', 'Oops');
+        }
     }
 
     private async addMoreArticles() {

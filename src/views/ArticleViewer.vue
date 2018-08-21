@@ -9,11 +9,11 @@ const Emoji = require('markdown-it-emoji');
 const Katex = require('markdown-it-katex');
 const Highlight = require('highlight.js');
 import '@/assets/AndroidStudio.css';
-import { setTimeout } from 'timers';
+import axios from 'axios';
 
-//for test
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+interface Article {
+  title: string;
+  content: string;
 }
 
 @Component
@@ -38,12 +38,25 @@ export default class ArticleViewer extends Vue {
         });
         md.use(Emoji);
         md.use(Katex);
-        this.renderedHTMLString = md.render(await this.getContent());
+
+        const article = await this.getArticle();
+        document.title = `Simple Blog - ${article.title}`;
+        this.renderedHTMLString = md.render(article.content);
     }
 
-    private async getContent() {
-        await sleep(500);
-        return '## 你好\n这是一首简单的小情歌';
+    private async getArticle(): Promise<Article> {
+      const res = await axios.get(`/api/article/${this.id}`);
+      if (res.status === 200) {
+        return {
+          title: res.data.title,
+          content: res.data.content,
+        };
+      } else {
+        return {
+          title: '网络错误',
+          content: '# 请重试',
+        };
+      }
     }
 }
 </script>
