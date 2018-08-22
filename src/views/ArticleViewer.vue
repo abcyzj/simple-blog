@@ -45,6 +45,12 @@ export default class ArticleViewer extends Vue {
     }
 
     private async getArticle(): Promise<Article> {
+      if (this.id === 'about') {
+        const res = await axios.get('/api/aboutArticle');
+        if (res.status === 200) {
+          this.id = res.data.id;
+        }
+      }
       const res = await axios.get(`/api/article/${this.id}`);
       if (res.status === 200) {
         return {
