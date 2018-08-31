@@ -1,9 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import ArticleList from './views/ArticleList.vue';
-import ArticleViewer from './views/ArticleViewer.vue';
-import Page404 from './views/404.vue';
 
 Vue.use(Router);
 
@@ -12,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: () => import('@/views/Home.vue'),
       meta: {
         title: '首页',
       },
@@ -20,7 +16,7 @@ export default new Router({
     {
       path: '/list/:categoryName',
       name: 'list',
-      component: ArticleList,
+      component: () => import('@/views/ArticleList.vue'),
       props: true,
       meta: {
         title: '文章列表',
@@ -29,7 +25,7 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: ArticleViewer,
+      component: () => import('@/views/ArticleViewer.vue'),
       props: {
         id: 'about',
       },
@@ -40,7 +36,7 @@ export default new Router({
     {
       path: '/article/:id',
       name: 'article',
-      component: ArticleViewer,
+      component: () => import('@/views/ArticleViewer.vue'),
       props: true,
       meta: {
         title: '文章',
@@ -49,7 +45,7 @@ export default new Router({
     {
       path: '*',
       name: '404',
-      component: Page404,
+      component: () => import('@/views/404.vue'),
       meta: {
         title: '404',
       },
