@@ -145,17 +145,6 @@ export default class ArticleViewer extends Vue {
   max-width: 100%;
 }
 
-@import url(http://fonts.googleapis.com/css?family=Merriweather:300italic,300);
-
-/* .content-wrapper * {
-  color: #444;
-  font-family: 'Merriweather', Georgia, serif;
-  margin: 0;
-  max-width: 100%;
-} */
-
-/* === A bit of a gross hack so we can have bleeding divs/blockquotes. */
-
 .content-wrapper p,
 .content-wrapper *:not(div):not(img):not(body):not(html):not(li):not(blockquote):not(p):not(.katex):not(.reset-textstyle.textstyle) {
   margin: 1rem auto 1rem;
